@@ -25,57 +25,30 @@ export default class Character implements Fighter {
     this._lifePoints = this._maxLifePoints;
     this._strength = getRandomInt(1, 10);
     this._defense = getRandomInt(1, 10);
-    this._energy = {
-      type_: this._archetype.energyType,
-      amount: getRandomInt(1, 10),
-    };
+    this._energy = { type_: this._archetype.energyType, amount: getRandomInt(1, 10) };
   }
 
-  get race(): Race {
-    return this._race;
-  }
+  get race() { return this._race; }
+  get archetype() { return this._archetype; }
+  get lifePoints() { return this._lifePoints; }
+  get strength() { return this._strength; }
+  get defense() { return this._defense; }
+  get dexterity() { return this._dexterity; }
+  get energy() { return { ...this._energy }; }
 
-  get archetype(): Archetype {
-    return this._archetype;
-  }
+  attack(enemy: SimpleFighter) { enemy.receiveDamage(this._strength); }
 
-  get lifePoints(): number {
-    return this._lifePoints;
-  }
-  
-  get strength(): number {
-    return this._strength;
-  }
-  
-  get defense(): number {
-    return this._defense;
-  }
-  
-  get dexterity(): number {
-    return this._dexterity;
-  }
-  
-  get energy(): Energy {
-    return { ...this._energy };
-  }
-
-  attack(enemy: SimpleFighter): void {
-    enemy.receiveDamage(this._strength);
-  }
-
-  special(enemy: Fighter): void {
+  special(enemy: Fighter) {
     const specialAttackStrength = this._strength * 2; 
     enemy.receiveDamage(specialAttackStrength);
-  
+
     if (Math.random() < 0.2) {
-      this._lifePoints += specialAttackStrength * 0.5;
-      if (this._lifePoints > this._maxLifePoints) {
-        this._lifePoints = this._maxLifePoints; 
-      }
+      this._lifePoints = Math.min(this._lifePoints
+         + specialAttackStrength * 0.5, this._maxLifePoints);
     }
   }
 
-  levelUp(): void {
+  levelUp() {
     this._maxLifePoints = Math.min(
       this._race.maxLifePoints,
       this._maxLifePoints + getRandomInt(1, 10),
@@ -87,18 +60,9 @@ export default class Character implements Fighter {
     this._lifePoints = this._maxLifePoints;
   }
 
-  receiveDamage(attackPoints: number): number {
-    const damage = attackPoints - this._defense;
-    if (damage > 0) {
-      this._lifePoints -= damage;
-    } else {
-      this._lifePoints -= 1;
-    }
-  
-    if (this._lifePoints < 0) {
-      this._lifePoints = -1;
-    }
-  
+  receiveDamage(attackPoints: number) {
+    const damage = Math.max(attackPoints - this._defense, 1);
+    this._lifePoints = Math.max(this._lifePoints - damage, -1);
     return this._lifePoints;
   }
 }
