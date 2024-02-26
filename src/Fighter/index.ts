@@ -3,4 +3,4 @@ import SimpleFighter from './SimpleFighter';
 
 export default Fighter;
 
-export { Fighter, SimpleFighter };
+export { SimpleFighter };
