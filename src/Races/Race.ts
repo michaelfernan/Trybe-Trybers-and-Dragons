@@ -1,18 +1,18 @@
 export default abstract class Race {
-  private _name: string;
-  private _dexterity: number;
+  #name: string;
+  #dexterity: number;
   
   constructor(name: string, dexterity: number) {
-    this._name = name;
-    this._dexterity = dexterity;
+    this.#name = name;
+    this.#dexterity = dexterity;
   }
   
   get name(): string {
-    return this._name;
+    return this.#name;
   }
   
   get dexterity(): number {
-    return this._dexterity;
+    return this.#dexterity;
   }
   
   static createdRacesInstances(): number {
