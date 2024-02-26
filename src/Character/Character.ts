@@ -5,6 +5,7 @@ import Energy from '../Energy';
 import getRandomInt from '../utils';
 import { Elf } from '../Races';
 import Mage from '../Archetypes/Mage';
+import SimpleFighter from '../Fighter/SimpleFighter';
 
 export default class Character implements Fighter {
   private _race: Race;
@@ -58,19 +59,18 @@ export default class Character implements Fighter {
     return { ...this._energy };
   }
 
-  attack(enemy: Fighter): void {
+  attack(enemy: SimpleFighter): void {
     enemy.receiveDamage(this._strength);
   }
 
   special(enemy: Fighter): void {
-    const specialAttackStrength = this._strength * 2; // Dobro da força normal
+    const specialAttackStrength = this._strength * 2; 
     enemy.receiveDamage(specialAttackStrength);
   
-    // Chance de 20% de recarregar pontos de vida
     if (Math.random() < 0.2) {
-      this._lifePoints += specialAttackStrength * 0.5; // Recarrega 50% do dano causado
+      this._lifePoints += specialAttackStrength * 0.5;
       if (this._lifePoints > this._maxLifePoints) {
-        this._lifePoints = this._maxLifePoints; // Garante que os pontos de vida não ultrapassem o máximo
+        this._lifePoints = this._maxLifePoints; 
       }
     }
   }
